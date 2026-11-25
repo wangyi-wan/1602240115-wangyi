@@ -1,0 +1,15 @@
+<view class="page">
+  <view class="brand">牙科诊所管理系统</view>
+  <view class="sub">请选择你的身份登录</view>
+
+  <view class="roles">
+    <view wx:for="{{roles}}" wx:key="key"
+          class="role {{picked === item.key ? 'on' : ''}}"
+          data-key="{{item.key}}" bindtap="pick">
+      <view class="rname">{{item.name}}</view>
+      <view class="rdesc">{{item.desc}}</view>
+    </view>
+  </view>
+
+  <button class="btn" bindtap="login">进入</button>
+</view>

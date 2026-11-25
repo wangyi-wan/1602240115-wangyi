@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="title">预约就诊</view>
+
+  <view class="card">
+    <view class="row">
+      <text class="label">患者</text>
+      <picker mode="selector" range="{{patients}}" range-key="name" bindchange="onPatient">
+        <view class="value">{{patientName || '请选择'}}</view>
+      </picker>
+    </view>
+
+    <view class="row">
+      <text class="label">牙椅</text>
+      <picker mode="selector" range="{{chairs}}" range-key="code" bindchange="onChair">
+        <view class="value">{{chairCode || '请选择'}}</view>
+      </picker>
+    </view>
+
+    <view class="row">
+      <text class="label">日期</text>
+      <picker mode="date" value="{{date}}" bindchange="onDate">
+        <view class="value">{{date}}</view>
+      </picker>
+    </view>
+
+    <view class="row">
+      <text class="label">时段</text>
+      <picker mode="selector" range="{{slots}}" bindchange="onSlot">
+        <view class="value">{{slot || '请选择'}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <button class="btn" bindtap="submit" loading="{{loading}}">确认预约</button>
+
+  <view class="hint">后端地址：{{baseUrl}}</view>
+</view>

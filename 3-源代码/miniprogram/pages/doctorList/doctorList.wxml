@@ -1,0 +1,7 @@
+<view class="title">牙科医生列表</view>
+<view wx:for="{{doctorList}}" wx:key="id" class="doctor-card">
+  <text class="doctor-name">医生姓名：{{item.name}}</text>
+  <view></view>
+  <text class="doctor-department">科室：{{item.department}}</text>
+  <button class="appoint-btn" bindtap="goAppointment" data-id="{{item.id}}">预约</button>
+</view>

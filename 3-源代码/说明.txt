@@ -1,0 +1,28 @@
+3-源代码 内容说明
+========================
+
+本文件夹是系统的「完整源代码」：
+
+【backend/】  FastAPI 后端
+  app/api/       接口路由：登录、预约、提醒、元数据
+  app/service/   业务逻辑：预约服务、提醒服务
+  app/domain/    领域模型：预约状态机
+  app/infra/     基础设施：数据库连接、消息网关、仓储
+  requirements.txt   Python 依赖清单
+  start_backend.bat  Windows 一键启动脚本
+  tests/         单元测试
+
+【miniprogram/】  微信小程序前端
+  pages/          主包：登录、首页、预约、提醒记录等
+  packagePatient/    患者分包（预约、我的记录）
+  packageDoctor/     医生分包（看板、汇总）
+  packageReception/  前台分包（今日到诊）
+  packageNurse/      护士分包（分诊）
+  packageDirector/   主任分包（经营指标）
+  utils/request.js   后端地址配置
+
+【db/】  数据库脚本
+  schema.sql   建库 + 7 张表 + 初始测试数据
+  reminder.sql 提醒相关表
+
+运行步骤见 README.md 或「2-演示文档/牙科系统-实操手册.html」。

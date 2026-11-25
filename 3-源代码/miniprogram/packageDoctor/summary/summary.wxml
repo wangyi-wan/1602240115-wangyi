@@ -1,0 +1,18 @@
+<view class="page">
+  <view class="head">病历摘要</view>
+  <view class="sub">{{date}} · 当日就诊患者一览</view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+  <view wx:elif="{{list.length === 0}}" class="empty">今天还没有患者</view>
+
+  <view wx:else>
+    <view class="card" wx:for="{{list}}" wx:key="appointment_id">
+      <view class="top">
+        <view class="name">{{item.patient_name}}</view>
+        <view class="tag" style="background:{{item.color}}">{{item.statusLabel}}</view>
+      </view>
+      <view class="row"><text class="k">预约时间</text><text class="v">{{item.time}}</text></view>
+      <view class="row"><text class="k">牙椅</text><text class="v">{{item.chair_code}}</text></view>
+    </view>
+  </view>
+</view>

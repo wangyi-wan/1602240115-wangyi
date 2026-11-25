@@ -1,0 +1,52 @@
+<!--pages/appointment/appointment.wxml-->
+<view class="page">
+
+  <view class="card">
+    <view class="card-title">预约信息</view>
+
+    <view class="row">
+      <text class="label">就诊医生</text>
+      <text class="value">{{doctorName || '未选择'}}</text>
+    </view>
+
+    <!-- 就诊人：从后端 t_patient 拉 -->
+    <view class="row">
+      <text class="label">就诊人</text>
+      <picker mode="selector" range="{{patientNames}}" value="{{patientIndex}}" bindchange="changePatient" disabled="{{patientNames.length === 0}}">
+        <view class="picker">{{patientNames.length ? patientNames[patientIndex] : '加载中…'}}</view>
+      </picker>
+    </view>
+
+    <!-- 牙椅：从后端 t_dental_chair 拉 -->
+    <view class="row">
+      <text class="label">牙椅</text>
+      <picker mode="selector" range="{{chairNames}}" value="{{chairIndex}}" bindchange="changeChair" disabled="{{chairNames.length === 0}}">
+        <view class="picker">{{chairNames.length ? chairNames[chairIndex] : '加载中…'}}</view>
+      </picker>
+    </view>
+
+    <view class="row">
+      <text class="label">预约日期</text>
+      <picker mode="date" value="{{selectDate}}" start="{{today}}" bindchange="changeDate">
+        <view class="picker">{{selectDate || '请选择日期'}}</view>
+      </picker>
+    </view>
+
+    <view class="row">
+      <text class="label">时段</text>
+      <picker mode="selector" range="{{timeList}}" value="{{timeIndex}}" bindchange="changeTime">
+        <view class="picker">{{timeList[timeIndex]}}</view>
+      </picker>
+    </view>
+
+    <view class="row">
+      <text class="label">手机号</text>
+      <input class="input" type="number" placeholder="请输入手机号" maxlength="11" value="{{phone}}" bindinput="inputPhone" />
+    </view>
+  </view>
+
+  <button class="submit-btn" bindtap="submitOrder" loading="{{submitting}}">确认预约</button>
+
+  <view class="tip">提示：同一把牙椅同一时段只能有一人，冲突时会提示换时段。</view>
+
+</view>

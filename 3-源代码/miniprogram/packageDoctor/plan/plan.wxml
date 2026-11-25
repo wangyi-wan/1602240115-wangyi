@@ -1,0 +1,42 @@
+<view class="page">
+  <!-- 列表模式：选一位患者 -->
+  <block wx:if="{{mode === 'list'}}">
+    <view class="head">治疗方案</view>
+    <view class="sub">{{date}} · 选择一位患者查看 / 制定方案</view>
+    <view wx:if="{{loading}}" class="empty">加载中…</view>
+    <view wx:elif="{{list.length === 0}}" class="empty">今天还没有预约</view>
+    <view wx:else>
+      <view class="card" wx:for="{{list}}" wx:key="appointment_id" data-id="{{item.appointment_id}}" bindtap="openDetail">
+        <view class="top">
+          <view class="name">{{item.patient_name}}</view>
+          <view class="tag" style="background:{{item.color}}">{{item.statusLabel}}</view>
+        </view>
+        <view class="row"><text class="k">时间</text><text class="v">{{item.time}}</text></view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 详情模式：制定方案 + 推进状态 -->
+  <block wx:else>
+    <view class="head">治疗方案</view>
+    <view wx:if="{{loading}}" class="empty">加载中…</view>
+    <block wx:else>
+      <view class="card">
+        <view class="top">
+          <view class="name">{{detail.patient_name}}</view>
+          <view class="tag" style="background:{{detail.color}}">{{detail.statusLabel}}</view>
+        </view>
+        <view class="row"><text class="k">预约时间</text><text class="v">{{detail.time}}</text></view>
+        <view class="row"><text class="k">牙椅</text><text class="v">{{detail.chair_code}}</text></view>
+      </view>
+
+      <view class="card">
+        <view class="name" style="margin-bottom:12rpx;">治疗方案备注</view>
+        <textarea class="note" placeholder="记录诊断与治疗方案（本机保存，演示用）" value="{{note}}" bindinput="inputNote" maxlength="500"></textarea>
+        <button class="btn ghost" bindtap="saveNote">保存方案</button>
+      </view>
+
+      <button wx:if="{{detail.actionLabel}}" class="btn" data-id="{{detail.appointment_id}}" data-event="{{detail.actionEvent}}" bindtap="advance">{{detail.actionLabel}}</button>
+    </block>
+  </block>
+</view>

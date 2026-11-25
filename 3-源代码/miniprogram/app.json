@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/home/home",
+    "pages/reminders/reminders"
+  ],
+  "subpackages": [
+    {
+      "root": "packagePatient",
+      "pages": [
+        "book/book",
+        "mine/mine"
+      ]
+    },
+    {
+      "root": "packageReception",
+      "pages": [
+        "today/today"
+      ]
+    },
+    {
+      "root": "packageDoctor",
+      "pages": [
+        "summary/summary",
+        "plan/plan"
+      ]
+    },
+    {
+      "root": "packageNurse",
+      "pages": [
+        "triage/triage"
+      ]
+    },
+    {
+      "root": "packageDirector",
+      "pages": [
+        "metrics/metrics"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTitleText": "牙科诊所",
+    "navigationBarBackgroundColor": "#1677ff",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f6f8"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

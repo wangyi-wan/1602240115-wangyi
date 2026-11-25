@@ -1,0 +1,68 @@
+/* pages/appointment/appointment.wxss */
+page {
+  background-color: #f2f6fa;
+}
+
+.page {
+  padding: 24rpx;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.card-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #1a3a5c;
+  margin-bottom: 20rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 2rpx solid #eef2f6;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 0;
+  border-bottom: 2rpx solid #f4f6f8;
+}
+
+.label {
+  width: 170rpx;
+  font-size: 30rpx;
+  color: #555555;
+}
+
+.value {
+  font-size: 30rpx;
+  color: #222222;
+}
+
+.picker {
+  flex: 1;
+  font-size: 30rpx;
+  color: #222222;
+}
+
+.input {
+  flex: 1;
+  font-size: 30rpx;
+}
+
+.submit-btn {
+  margin-top: 50rpx;
+  background-color: #2781d9;
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+}
+
+.tip {
+  margin-top: 30rpx;
+  font-size: 24rpx;
+  color: #999999;
+  text-align: center;
+}

@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="head">经营指标</view>
+  <view class="sub">诊所运营概览（实时统计）</view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+  <block wx:else>
+    <view class="metrics">
+      <view class="metric"><view class="num">{{total}}</view><view class="lbl">累计预约</view></view>
+      <view class="metric"><view class="num">{{todayCount}}</view><view class="lbl">今日预约</view></view>
+      <view class="metric"><view class="num">{{active}}</view><view class="lbl">进行中</view></view>
+      <view class="metric"><view class="num">{{done}}</view><view class="lbl">已完成</view></view>
+      <view class="metric"><view class="num">{{cancelled}}</view><view class="lbl">取消/失约</view></view>
+    </view>
+
+    <view class="card" style="margin-top:24rpx;">
+      <view class="name" style="margin-bottom:12rpx;">状态分布</view>
+      <view class="row" wx:for="{{breakdown}}" wx:key="label">
+        <text class="k">{{item.label}}</text><text class="v">{{item.num}} 条</text>
+      </view>
+      <view wx:if="{{breakdown.length === 0}}" class="empty" style="padding:40rpx 0;">暂无数据</view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,40 @@
+<view class="page">
+  <view class="bar">
+    <view class="bar-l">
+      <view class="bar-t">当前通道</view>
+      <view class="bar-v">{{channelName}}</view>
+    </view>
+    <view class="tag {{templateConfigured ? 'on' : 'off'}}">
+      {{templateConfigured ? '已配模板' : '未配模板'}}
+    </view>
+  </view>
+
+  <view class="tip" wx:if="{{!templateConfigured}}">
+    当前是小程序测试号，没有 AppSecret 也不能配订阅消息模板，
+    所以走桩通道：流程和记录都是真的，只是不真发消息。
+  </view>
+
+  <view class="acts">
+    <view class="btn" bindtap="load">刷新记录</view>
+    <view class="btn ghost" bindtap="demoFallback">演示降级链</view>
+  </view>
+
+  <view class="list">
+    <view class="card" wx:for="{{items}}" wx:key="log_id">
+      <view class="row">
+        <text class="ch">{{item.channelName}}</text>
+        <text class="res r-{{item.result}}">{{item.resultName}}</text>
+      </view>
+      <view class="content">{{item.content}}</view>
+      <view class="meta">
+        <text>预约 #{{item.appointment_id}}</text>
+        <text>{{item.sent_at}}</text>
+      </view>
+      <view class="reason" wx:if="{{item.fail_reason}}">{{item.fail_reason}}</view>
+    </view>
+
+    <view class="empty" wx:if="{{items.length === 0 && !loading}}">
+      还没有记录。先去约一单，再点上面的按钮。
+    </view>
+  </view>
+</view>

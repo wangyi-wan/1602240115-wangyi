@@ -1,0 +1,4 @@
+/* pages/home/home.wxss */
+.extra { margin-top: 40rpx; background: #fff; border-radius: 16rpx; overflow: hidden; }
+.line { display: flex; justify-content: space-between; align-items: center; padding: 28rpx 32rpx; font-size: 28rpx; color: #1f2329; }
+.go { color: #1677ff; font-size: 26rpx; }
