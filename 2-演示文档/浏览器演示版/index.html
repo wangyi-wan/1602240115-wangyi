@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>口腔诊所管理系统 · 演示</title>
+<style>
+  :root{
+    --primary:#2563eb; --primary-d:#1d4ed8; --bg:#f1f5f9; --card:#fff;
+    --text:#0f172a; --muted:#64748b; --line:#e2e8f0; --ok:#16a34a;
+    --warn:#d97706; --danger:#dc2626; --shadow:0 1px 3px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:15px}
+  header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:22px 0}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+  header h1{font-size:24px;font-weight:700}
+  header p{opacity:.85;font-size:14px;margin-top:4px}
+  .status{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:4px 12px;border-radius:20px;font-size:13px;margin-top:10px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 4px rgba(74,222,128,.25)}
+  .dot.off{background:#f87171;box-shadow:0 0 0 4px rgba(248,113,113,.25)}
+  nav{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  nav .wrap{display:flex;gap:4px;overflow-x:auto}
+  nav button{background:none;border:none;padding:14px 16px;font-size:14px;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;font-weight:500}
+  nav button.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:600}
+  main{padding:28px 0 60px}
+  .panel{display:none}
+  .panel.active{display:block}
+  .card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:22px;margin-bottom:18px}
+  .card h2{font-size:18px;margin-bottom:4px}
+  .card .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .stat{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:10px;padding:18px}
+  .stat .n{font-size:32px;font-weight:700;color:var(--primary)}
+  .stat .l{color:var(--muted);font-size:13px;margin-top:2px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:13px;background:#f8fafc}
+  tr:last-child td{border-bottom:none}
+  .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
+  .b-ok{background:#dcfce7;color:#166534}.b-warn{background:#fef3c7;color:#92400e}
+  .b-info{background:#dbeafe;color:#1e40af}.b-gray{background:#f1f5f9;color:#475569}
+  .b-red{background:#fee2e2;color:#991b1b}
+  label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px;font-weight:500}
+  select,input,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff}
+  select:focus,input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+  button.btn{background:var(--primary);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:600;margin-top:16px}
+  button.btn:hover{background:var(--primary-d)}
+  button.btn:disabled{opacity:.6;cursor:wait}
+  button.ghost{background:#f1f5f9;color:var(--text)}
+  .role-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .role-tabs button{padding:8px 16px;border:1px solid var(--line);border-radius:20px;background:#fff;cursor:pointer;font-size:13px;color:var(--muted)}
+  .role-tabs button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .msg{padding:12px 16px;border-radius:8px;margin-top:14px;font-size:14px;display:none}
+  .msg.show{display:block}
+  .msg.ok{background:#dcfce7;color:#166534}.msg.err{background:#fee2e2;color:#991b1b}
+  .flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .flow .step{padding:12px 18px;border-radius:10px;background:#f8fafc;border:1px solid var(--line);text-align:center;flex:1;min-width:130px}
+  .flow .step .t{font-weight:600;font-size:14px}.flow .step .d{font-size:12px;color:var(--muted);margin-top:3px}
+  .flow .arrow{color:var(--muted);font-size:18px}
+  .log-item{padding:14px;border-left:3px solid var(--line);margin-bottom:10px;background:#f8fafc;border-radius:0 8px 8px 0}
+  .log-item .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .log-item .ch{font-weight:600;font-size:14px}
+  .log-item .ct{color:var(--muted);font-size:13px;margin-top:6px}
+  .log-item .fail{color:var(--danger);font-size:12px;margin-top:4px}
+  .empty{color:var(--muted);text-align:center;padding:30px;font-size:14px}
+  .hint{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;font-size:13px;color:#92400e;margin-bottom:16px}
+  code{background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:13px}
+  .api-note{font-size:12px;color:var(--muted);margin-top:10px}
+  .toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 20px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>🦷 口腔诊所管理系统</h1>
+    <p>《系统分析与设计》课程作业 · 微信小程序 + FastAPI + MySQL · 云端演示版</p>
+    <div class="status"><span class="dot" id="connDot"></span><span id="connText">正在连接云端后端…</span></div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <button data-panel="overview" class="active">系统概览</button>
+  <button data-panel="booking">患者预约</button>
+  <button data-panel="appointments">预约看板</button>
+  <button data-panel="reminder">提醒与降级链</button>
+  <button data-panel="roles">五角色与架构</button>
+</div></nav>
+
+<main class="wrap">
+
+  <!-- 概览 -->
+  <section class="panel active" id="overview">
+    <div class="hint">这是<b>浏览器演示版</b>，直接调用云端真实后端 <code id="baseUrlText"></code> 的数据。所有预约、状态变更、提醒记录都会真实写入数据库。</div>
+    <div class="grid g3" id="statCards">
+      <div class="stat"><div class="n" id="stPatients">–</div><div class="l">在册患者</div></div>
+      <div class="stat"><div class="n" id="stAppts">–</div><div class="l">预约总数</div></div>
+      <div class="stat"><div class="n" id="stChairs">–</div><div class="l">可用牙椅</div></div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <h2>系统包含五大角色</h2>
+      <p class="sub">一个微信小程序内集成五种角色，通过分分包加载；本演示版把它们呈现为可切换的视图。</p>
+      <div class="grid g3">
+        <div class="stat" style="background:#f0fdf4"><div style="font-size:22px">🧑‍⚕️</div><div style="font-weight:600;margin-top:6px">患者</div><div class="l">预约挂号 · 我的记录</div></div>
+        <div class="stat" style="background:#eff6ff"><div style="font-size:22px">👨‍⚕️</div><div style="font-weight:600;margin-top:6px">医生</div><div class="l">诊室看板 · 接诊汇总</div></div>
+        <div class="stat" style="background:#fef2f2"><div style="font-size:22px">👩‍💼</div><div style="font-weight:600;margin-top:6px">前台</div><div class="l">今日到诊登记</div></div>
+        <div class="stat" style="background:#faf5ff"><div style="font-size:22px">👩‍⚕️</div><div style="font-weight:600;margin-top:6px">护士</div><div class="l">分诊</div></div>
+        <div class="stat" style="background:#fffbeb"><div style="font-size:22px">👔</div><div style="font-weight:600;margin-top:6px">主任</div><div class="l">经营指标看板</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 预约 -->
+  <section class="panel" id="booking">
+    <div class="card">
+      <h2>患者预约挂号</h2>
+      <p class="sub">选择患者、牙椅和就诊时间，提交后会真实写入数据库，并自动生成一条就诊提醒计划。</p>
+      <div class="grid g2">
+        <div>
+          <label>就诊患者</label><select id="bkPatient"></select>
+          <label>牙椅</label><select id="bkChair"></select>
+          <label>就诊日期</label><input type="date" id="bkDate">
+          <label>就诊时间</label><input type="time" id="bkTime" value="09:00">
+          <label>时长（分钟）</label><select id="bkMinutes"><option>30</option><option>60</option><option>90</option></select>
+          <button class="btn" id="bkSubmit">提交预约</button>
+          <div class="msg" id="bkMsg"></div>
+        </div>
+        <div>
+          <div class="hint" style="background:#eff6ff;border-color:#bfdbfe;color:#1e40af">
+            💡 想演示"提醒降级链"？把就诊时间选在<b> 24 小时以内</b>，提醒计划才会被扫描到。
+          </div>
+          <p style="font-size:13px;color:var(--muted)">提交成功后：</p>
+          <div class="flow">
+            <div class="step"><div class="t">① 创建预约</div><div class="d">POST /api/appointments</div></div>
+            <div class="arrow">→</div>
+            <div class="step"><div class="t">② 生成提醒计划</div><div class="d">就诊前 24h 提醒</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 预约看板 -->
+  <section class="panel" id="appointments">
+    <div class="card">
+      <h2>预约看板</h2>
+      <p class="sub">医生 / 前台共用的到诊视图，数据来自云端。可点按钮推进预约状态。</p>
+      <table><thead><tr><th>编号</th><th>患者</th><th>牙椅</th><th>就诊时间</th><th>状态</th><th>操作</th></tr></thead>
+      <tbody id="apptBody"><tr><td colspan="6" class="empty">加载中…</td></tr></tbody></table>
+      <button class="btn ghost" id="apptRefresh">刷新数据</button>
+    </div>
+  </section>
+
+  <!-- 提醒 -->
+  <section class="panel" id="reminder">
+    <div class="card">
+      <h2>提醒与三级降级链</h2>
+      <p class="sub">系统默认走"桩通道"（只记录不实发），适合演示。降级链：微信 → 短信 → 人工外呼。</p>
+      <div class="flow">
+        <div class="step" style="background:#fef2f2"><div class="t">① 微信订阅消息</div><div class="d">主通道，失败则降级</div></div>
+        <div class="arrow">→</div>
+        <div class="step" style="background:#fffbeb"><div class="t">② 短信</div><div class="d">备用通道</div></div>
+        <div class="arrow">→</div>
+        <div class="step" style="background:#f0fdf4"><div class="t">③ 人工外呼</div><div class="d">兜底，确保不漏</div></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn" id="dispatchBtn">▶ 演示降级链（强制主通道失败）</button>
+        <label class="toggle"><input type="checkbox" id="forceFail" checked style="width:auto"> 模拟微信通道故障</label>
+      </div>
+      <div class="msg" id="dispMsg"></div>
+      <h2 style="margin-top:26px">发送记录（Outbox）</h2>
+      <p class="sub" id="channelInfo">当前通道：–</p>
+      <div id="outboxList"><div class="empty">加载中…</div></div>
+      <button class="btn ghost" id="outboxRefresh">刷新记录</button>
+    </div>
+  </section>
+
+  <!-- 角色架构 -->
+  <section class="panel" id="roles">
+    <div class="card">
+      <h2>系统架构与技术栈</h2>
+      <div class="flow">
+        <div class="step"><div class="t">微信小程序</div><div class="d">5 角色 · 分包加载</div></div>
+        <div class="arrow">⇄</div>
+        <div class="step"><div class="t">FastAPI 后端</div><div class="d">REST API · 状态机</div></div>
+        <div class="arrow">⇄</div>
+        <div class="step"><div class="t">MySQL 8.0</div><div class="d">7 张表 · 业务数据</div></div>
+      </div>
+      <table style="margin-top:18px">
+        <tr><th style="width:120px">层次</th><th>技术 / 说明</th></tr>
+        <tr><td>前端</td><td>微信小程序原生（WXML / WXSS / JS），主包 + 5 个分包</td></tr>
+        <tr><td>后端</td><td>Python 3.12 + FastAPI + SQLAlchemy + PyMySQL</td></tr>
+        <tr><td>数据库</td><td>MySQL 8.0，患者 / 医生 / 牙椅 / 预约 / 提醒计划 / 提醒日志等 7 张表</td></tr>
+        <tr><td>部署</td><td>腾讯云轻量应用服务器，公网 IP 直连，uvicorn 0.0.0.0:8000</td></tr>
+        <tr><td>设计方法</td><td>spec-kit 四层契约：constitution / spec / plan / tasks，代码可追溯需求</td></tr>
+      </table>
+      <div class="hint" style="margin-top:18px;background:#f0fdf4;border-color:#bbf7d0;color:#166534">
+        ✅ 本作业核心：<b>一个小程序承载五种角色</b> + <b>预约状态机</b> + <b>提醒三级降级链</b>（可靠性设计）。
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer>口腔诊所管理系统 · 系统分析与设计课程作业 · 演示数据存于云端数据库</footer>
+
+<script>
+// 后端 API 固定指向云端（后端已放行所有来源，页面放任意端口都能调通）
+const API_BASE = 'http://49.232.168.130:8000';
+document.getElementById('baseUrlText').textContent = API_BASE;
+
+async function api(path, opts={}){
+  opts.headers = Object.assign({'Content-Type':'application/json'}, opts.headers||{});
+  const r = await fetch(API_BASE + path, opts);
+  const t = await r.text();
+  let d; try{ d = JSON.parse(t) }catch(e){ d = t }
+  if(!r.ok) throw new Error((d && d.detail) || ('HTTP '+r.status));
+  return d;
+}
+function show(id, ok, text){ const e=document.getElementById(id); e.className='msg show '+(ok?'ok':'err'); e.textContent=text; }
+function fmt(dt){ return dt ? dt.replace('T',' ').slice(0,16) : '–' }
+const STATUS = {BOOKED:'已预约',CONFIRMED:'已确认',ARRIVED:'已到诊',IN_TREATMENT:'治疗中',DONE:'已完成',CANCELLED:'已取消',NO_SHOW:'未到诊'};
+function badge(s){ const m={ARRIVED:'b-ok',DONE:'b-ok',CONFIRMED:'b-info',BOOKED:'b-gray',CANCELLED:'b-red',NO_SHOW:'b-red',IN_TREATMENT:'b-warn'}; return `<span class="badge ${m[s]||'b-gray'}">${STATUS[s]||s}</span>` }
+
+// 顶部连接状态
+(async()=>{
+  try{ await api('/api/ping');
+    document.getElementById('connDot').classList.remove('off');
+    document.getElementById('connText').textContent='已连接云端后端';
+  }catch(e){
+    document.getElementById('connDot').classList.add('off');
+    document.getElementById('connText').textContent='后端连接失败：'+e.message;
+  }
+})();
+
+// 标签切换
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.panel).classList.add('active');
+  if(b.dataset.panel==='appointments') loadAppts();
+  if(b.dataset.panel==='reminder') loadOutbox();
+});
+
+// 概览数据
+(async()=>{
+  try{
+    const [p,c,a] = await Promise.all([api('/api/patients'),api('/api/chairs'),api('/api/appointments')]);
+    document.getElementById('stPatients').textContent=p.length;
+    document.getElementById('stChairs').textContent=c.length;
+    document.getElementById('stAppts').textContent=a.length;
+    // 预约表单下拉
+    document.getElementById('bkPatient').innerHTML = p.map(x=>`<option value="${x.patient_id}">${x.name}${x.remark?'（'+x.remark+'）':''}</option>`).join('');
+    document.getElementById('bkChair').innerHTML = c.map(x=>`<option value="${x.chair_id}">${x.code}</option>`).join('');
+  }catch(e){}
+})();
+
+// 默认日期=今天
+document.getElementById('bkDate').value = new Date().toISOString().slice(0,10);
+
+// 提交预约
+document.getElementById('bkSubmit').onclick = async function(){
+  const btn=this; btn.disabled=true;
+  const pid=+document.getElementById('bkPatient').value;
+  const cid=+document.getElementById('bkChair').value;
+  const date=document.getElementById('bkDate').value;
+  const time=document.getElementById('bkTime').value;
+  const mins=+document.getElementById('bkMinutes').value;
+  const start=date+'T'+time+':00';
+  try{
+    const appt=await api('/api/appointments',{method:'POST',body:JSON.stringify({patient_id:pid,chair_id:cid,start_time:start,minutes:mins})});
+    // 自动建提醒计划
+    try{ await api('/api/reminders/plan',{method:'POST',body:JSON.stringify({appointment_id:appt.appointment_id,openid:'demo-openid',lead_hours:24})}); }catch(e){}
+    show('bkMsg',true,`预约成功！编号 #${appt.appointment_id}，${fmt(appt.start_time)}，状态 ${STATUS[appt.status]||appt.status}。已自动生成提醒计划。`);
+  }catch(e){ show('bkMsg',false,'预约失败：'+e.message); }
+  finally{ btn.disabled=false; }
+};
+
+// 预约看板
+async function loadAppts(){
+  const body=document.getElementById('apptBody');
+  try{
+    const list=await api('/api/appointments');
+    if(!list.length){ body.innerHTML='<tr><td colspan="6" class="empty">暂无预约，去"患者预约"加一单</td></tr>'; return; }
+    body.innerHTML=list.map(a=>`<tr>
+      <td>#${a.appointment_id}</td><td>${a.patient_name||'-'}</td><td>${a.chair_code||'-'}</td>
+      <td>${fmt(a.start_time)}</td><td>${badge(a.status)}</td>
+      <td>${['BOOKED','CONFIRMED','ARRIVED','IN_TREATMENT'].includes(a.status)?`<button class="btn ghost" style="margin:0;padding:5px 10px;font-size:12px" onclick="advance(${a.appointment_id})">推进</button>`:'-'}</td>
+    </tr>`).join('');
+  }catch(e){ body.innerHTML=`<tr><td colspan="6" class="empty">加载失败：${e.message}</td></tr>`; }
+}
+window.advance = async function(id){
+  const evt=prompt('输入要触发的事件：\nCONFIRM=确认 / PATIENT_ARRIVE=到诊 / START_TREATMENT=开始治疗 / FINISH=完成 / PATIENT_CANCEL=取消', 'CONFIRM');
+  if(!evt) return;
+  try{ await api(`/api/appointments/${id}/event`,{method:'POST',body:JSON.stringify({event:evt.trim()})}); loadAppts(); }
+  catch(e){ alert('状态推进失败：'+e.message); }
+};
+document.getElementById('apptRefresh').onclick=loadAppts;
+
+// 提醒
+async function loadOutbox(){
+  const box=document.getElementById('outboxList');
+  try{
+    const d=await api('/api/reminders/outbox?limit=8');
+    document.getElementById('channelInfo').textContent=`当前通道：${d.channel} · ${d.template_configured?'已配微信模板':'未配模板（走桩通道，正常）'}`;
+    if(!d.items.length){ box.innerHTML='<div class="empty">暂无发送记录。约一个 24 小时内的号，再点"演示降级链"</div>'; return; }
+    const chName={STUB:'桩通道（微信）',SMS:'短信',MANUAL:'人工外呼',WECHAT:'微信'};
+    const resultName={OK:'成功',STUB:'桩送达',FAIL:'失败',MANUAL:'已转人工'};
+    box.innerHTML=d.items.map(x=>`<div class="log-item">
+      <div class="top"><span class="ch">${chName[x.channel]||x.channel}</span><span class="badge ${x.result==='FAIL'?'b-red':(x.result==='MANUAL'?'b-warn':'b-ok')}">${resultName[x.result]||x.result}</span></div>
+      <div class="ct">${x.content||x.title||''}</div>
+      ${x.fail_reason?`<div class="fail">↳ ${x.fail_reason}</div>`:''}
+      <div class="api-note">${x.sent_at||''}</div>
+    </div>`).join('');
+  }catch(e){ box.innerHTML=`<div class="empty">加载失败：${e.message}</div>`; }
+}
+document.getElementById('outboxRefresh').onclick=loadOutbox;
+document.getElementById('dispatchBtn').onclick=async function(){
+  const btn=this; btn.disabled=true;
+  const ff=document.getElementById('forceFail').checked;
+  try{
+    const d=await api(`/api/reminders/dispatch?force_fail=${ff}`,{method:'POST'});
+    show('dispMsg',true,`扫描完成：到期待发 ${d.due_count} 条，已处理 ${(d.results||[]).length} 条。下方记录已刷新。`);
+    loadOutbox();
+  }catch(e){ show('dispMsg',false,'演示失败：'+e.message); }
+  finally{ btn.disabled=false; }
+};
+</script>
+</body>
+</html>
